@@ -8,7 +8,7 @@ fn main() {
     // Generate random number with a generator local to the current thread and is seeded by the OS
     // The range is specified as 1..=100 which means 1-100 inclusive
     let secret_number = rand::thread_rng().gen_range(1..=100);  // By default an i32
-    println!("The secret number is: {secret_number}");
+    // println!("The secret number is: {secret_number}");
 
     loop {
         println!("Please input your guess...");
