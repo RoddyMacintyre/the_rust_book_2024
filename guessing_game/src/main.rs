@@ -22,7 +22,11 @@ fn main() {
             .expect("Failed to read line!");    // Catch the Err variant of the Result Enum, or return the Ok value (n bytes of the user input)
 
         // Cast guess to an unsigned 32 bit int. Parse() is the part converting from string to another type.
-        let guess: u32 = guess.trim().parse().expect("Not a number, please type a number!");
+        // Check if it's a num. If Ok, pass to var, if Err ask for input again
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue,     // _ is a catch all value; anything caught here will be checked
+        };   //.expect("Not a number, please type a number!");
 
         println!("You guessed: {guess}");
 
