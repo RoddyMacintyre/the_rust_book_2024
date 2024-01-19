@@ -19,6 +19,9 @@ fn main() {
         .read_line(&mut guess)// Need to make the reference mutable as well, hence `&mut guess`
         .expect("Failed to read line!");    // Catch the Err variant of the Result Enum, or return the Ok value (n bytes of the user input)
 
+    // Cast guess to an unsigned 32 bit int
+    let guess: u32 = guess.trim().parse().expect("Not a number, please type a number!");
+
     println!("You guessed: {guess}");
 
     // Ordering is a type with Enums `Less`, `Greater` & `Equal`. guess is compared to secret_number here
