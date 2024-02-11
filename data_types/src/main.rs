@@ -1,3 +1,5 @@
+use std::io;
+
 fn main() {
     // Floating point. IEEE-754 standard
     let x = 2.0; // f64
@@ -47,7 +49,7 @@ fn main() {
     let one = tup.2;
     println!("Tuple values:\t{five_hundred}, {six_point_four}, {one}");
 
-    // Emtpy tuple is call "unit". Every function that doesn;t return another type of value implicitly returns a "unit".
+    // Emtpy tuple is call "unit". Every function that doesn't return another type of value implicitly returns a "unit".
 
     // ARRAYS:
     // Same type, fixed size
@@ -66,4 +68,30 @@ fn main() {
     let first = a[0];
     let second = a[1];
     println!("First:\t{first}\nSecond:\t{second}\n");
+
+    let a = [1, 2, 3, 4, 5];
+    // Accessing array data
+    let first = a[0];
+    let second = a[1];
+    println!("First:\t{first}\nSecond:\t{second}\n");
+
+    // Invalid array access
+    // Out of range:
+    println!("Please enter an array index:");
+
+    let mut index = String::new();
+    io::stdin()
+        .read_line(&mut index)
+        .expect("Failed to read line!");
+
+    let index: usize = index
+        .trim()
+        .parse()
+        .expect("Index entered was not a number!");
+
+    let element = a[index];
+    println!("The value of the element at index {index} is: {element}");
+    // Rust panicks out at an array bounds check.
+    // Most other low-level languages will let you access the memory that is out of bounds of the array,
+    // making for weird memory accessing and unpredictable data.
 }
