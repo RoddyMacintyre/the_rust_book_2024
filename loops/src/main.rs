@@ -47,4 +47,29 @@ fn main() {
     }
 
     println!("LIFTOFF!!!");
+
+    // Looping through a collection with for
+    // Below code is error-prone.
+    // Also slow because the compiler adds a runtime check of array bounds
+    let a = [10, 20, 30, 40, 50];
+    let mut index = 0;
+
+    while index < 5 {
+        println!("The value is: {}", a[index]);
+        index += 1;
+    }
+
+    // Better version:
+    let a = [10, 20, 30, 40, 50];
+
+    for element in a {
+        println!("The value is: {element}");
+    }
+
+    // For loop with ranges
+    // Countdown example with a range & rev function
+    for number in (1..4).rev() {
+        println!("{number}");
+    }
+    println!("LIFTOFF!!!");
 }
