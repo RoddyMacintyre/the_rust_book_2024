@@ -15,10 +15,45 @@
 // HEAP: Separate region in mem where data can live indefinitely, and is not tied to a specific stack frame
 // BOX: Rust uses the concept of a box for putting data on the heap
 
+// RUST does not permit manual memory management!
+// Stack frames are automatically managed by Rust
+
+// With BOX, how does Rust free this memory?
+// A box's owner manages this deallocation
+// If a var is bound to a box, when Rust deallocates the vsr's frame, Rust deallocates the box's heap memory
+
+// So what if 2 vars hold a reference to a box?
+// Rust uses ownership to resolve the issue of trying to release the heap box twice!
+
+// ========== BOX ==========
+// Boxes are used in Rust data structures like Vec, String, HashMap, etc.
+
+// ========== MOVING ==========
+// ! Variables cannot be used after being moved !
+// Moves happen by default if there is no copy trait associated with the type!
+
+// ========== CLONING ==========
+// Cloning can avoid moves. Clone the var you pass as an arg to a func, and keep the original intact for later reference
+
+fn add_suffix(mut name: String) {
+    // Pointer to the String data from the arg is moved from the passed var to the local var name
+    name.push_str(" Jr.");  // Resize the heap allocation.
+    // Create new larger allocation, write new string into new allocation, & free original heap memory
+    // Initial passed var now points to deallocated memory
+    name    // Return statement without explicit keyword of semicolon!
+}
+
+
+
 fn boxed() {
     // A box is memory allocated on the heap for pointer use
+    // First a OWNS the box
     let a = Box::new([0; 1_000_000]);
+    // Then ownership is MOVED from a to b
     let b = a;
+    // What happens when we exit here?
+    // If a var owns a box, when Rust deallocates the var's frame, then Rust deallocates the box's heap memory
+    // In this case on behalf of the variable b!
 }
 
 fn read(y: bool){
@@ -31,4 +66,11 @@ fn read(y: bool){
 fn main() {
     let x = true;
     read(x);
+
+    // Create, move, and mutate a String
+    // first gets moved to name inside the add_suffix function, and then moved to full in the main function.
+    // Eventually full owns the value
+    let first = String::from("Ferris"); // Allocated to the heap
+    let full = add_suffix(first);
+    println!("{full}");
 }
