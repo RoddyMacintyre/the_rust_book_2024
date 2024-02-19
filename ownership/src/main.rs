@@ -37,8 +37,11 @@
 
 // ########## REFERENCING ##########
 // Referencing is a way to handle variables in scopes without moves. They are non-owning pointers
+// Referencing is like borrowing
+
 fn greet(g1: &String, g2: &String) {
-    println!("{} {}", g1, g2);
+    println!("{} {}", g1, g2);      // These vsariables neither own the passed argument, nor the String
+    // Therefor, upon exiting this function, nothing on the heap is deallocated, just the stack frame.
 }
 
 fn add_suffix(mut name: String) -> String {
@@ -87,4 +90,32 @@ fn main() {
     greet(&m1, &m2);    // PAss references
     let s = format!("{} {}", m1, m2);
     println!("Formatted after greet, references are kept:\n\t{s}");
+
+    // ========== DEREFERENCING ==========
+    let mut x: Box<i32> = Box::new(1);
+    let a: i32 = *x;    // *x reads the heap value, which is 1
+    *x += 1;            // *x on the left side of an expression modiefies the heap value, so x points to 2
+
+    let r1: &Box<i32> = &x; // r1 points to x on the stack, and x points to a value in the heap
+    let b: i32 = **r1;      // Therefor, need to dereference twice down the path to tget the heap value (2)
+
+    let r2: &i32 = &*x;     // r2 points to the heap value directly, it's a reference to the dereferenced x
+    let c: i32 = *r2;       // So only one dereference is needed to read it
+
+    // Explicit conversions of references and pointers
+    let x: Box<i32> = Box::new(-1);
+    let x_abs1 = i32::abs(*x);  // Explicit dereference
+    let x_abs2 = x.abs();       // Implicit dereferencing with dot notation
+    assert_eq!(x_abs1, x_abs2);
+
+    let r: &Box<i32> = &x;
+    let r_abs1 = i32::abs(**r);     // Explicit dereference twice
+    let r_abs2 = r.abs();           // Implicit dereference twice
+    assert_eq!(r_abs1, r_abs2);
+
+    let s = String::from("Hello");
+    let s_len1 = str::len(&s);      // Explicit reference
+    let s_len2 = s.len();           // Implicit reference
+    assert_eq!(s_len1, s_len2);
+    // Dot syntax is syntactic sugar for the function call syntax
 }
