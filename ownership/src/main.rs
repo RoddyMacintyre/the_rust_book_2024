@@ -35,7 +35,13 @@
 // ========== CLONING ==========
 // Cloning can avoid moves. Clone the var you pass as an arg to a func, and keep the original intact for later reference
 
-fn add_suffix(mut name: String) {
+// ########## REFERENCING ##########
+// Referencing is a way to handle variables in scopes without moves. They are non-owning pointers
+fn greet(g1: &String, g2: &String) {
+    println!("{} {}", g1, g2);
+}
+
+fn add_suffix(mut name: String) -> String {
     // Pointer to the String data from the arg is moved from the passed var to the local var name
     name.push_str(" Jr.");  // Resize the heap allocation.
     // Create new larger allocation, write new string into new allocation, & free original heap memory
@@ -73,4 +79,12 @@ fn main() {
     let first = String::from("Ferris"); // Allocated to the heap
     let full = add_suffix(first);
     println!("{full}");
+
+    // Referencing
+    let m1 = String::from("Hello");
+    let m2 = String::from("world");
+
+    greet(&m1, &m2);    // PAss references
+    let s = format!("{} {}", m1, m2);
+    println!("Formatted after greet, references are kept:\n\t{s}");
 }
