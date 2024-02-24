@@ -77,6 +77,10 @@ fn permission_intro() {
     v.push(4);                         // Permissions: v: -
 }
 
+// The borrow checker finds Permission Violations
+// Creating a reference cause data to be temporarily read-only, until reference is no longer used
+// Vars cannot be mutated when a reference is in use!
+
 fn greet(g1: &String, g2: &String) {
     println!("{} {}", g1, g2);      // These vsariables neither own the passed argument, nor the String
     // Therefor, upon exiting this function, nothing on the heap is deallocated, just the stack frame.
