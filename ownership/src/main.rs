@@ -49,6 +49,34 @@
 
 // Rest is on the borrow checker. This ensures the safety of references (non-owning pointers), made to temporarily create aliases
 
+// Avoiding simultaneous Aliasing & Mutation
+// Aliasing & mutation together is dangerous for obvious reasons.
+// - Deallocation of the aliased data leaves the other variable to point to deallocated memory
+// - Mutation can leave runtime properties invalidated
+// - Concurrently mutating the aliased data, causing data races, with nondeterministic behaviour
+
+// ========== Borrow checker ==========
+// Variables have 3 kinds of permissions:
+//
+// - Read: data can be copied to another location
+// - Write: data can be mutated in-place
+// - Own: data can be moved or dropped
+
+// These permissions are not at runtime, but compile time
+// Defaults to RO (read + own)
+// "let mut" gives a variable write permission
+// References can temporarily remove these permissions
+
+// Permissions are defined on paths and not just variables.
+// A path is anything on the left hand side of an assignment
+
+fn permission_intro() {
+    let mut v: Vec<i32> = vec![1, 2, 3];    // Permissions: RWO
+    let num: &i32 = &v[2];                  // Permissions: v: R, num: RO, *num: R
+    println!("Third element is {}", *num);  // Permissions: v: RWO, num: -, *num: -
+    v.push(4);                         // Permissions: v: -
+}
+
 fn greet(g1: &String, g2: &String) {
     println!("{} {}", g1, g2);      // These vsariables neither own the passed argument, nor the String
     // Therefor, upon exiting this function, nothing on the heap is deallocated, just the stack frame.
