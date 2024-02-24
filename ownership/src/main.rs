@@ -94,6 +94,28 @@ fn mutable_refs(){
     println!("Vector is now {:?}", v);          // Permissions: v: -
 }
 
+// Permissions are returned at the end of a reference's lifetime
+// Lifetime is span of first initialized til last used
+
+fn lifetime_example(){
+    let mut x = 1;
+    let y = &x;     // Lifetime of y begins (permissions: x: r)
+    let z = *y;     // Lifetime of y ends (permissions: x: RWO)
+    x += z;
+}
+
+// Variables can have different lifetimes in each branch of a conditional
+fn ascii_capitalize(v: &mut Vec<char>) {
+    let c = &v[0];
+
+    if c.is_ascii_lowercase(){
+        let up = c.to_ascii_uppercase();
+        v[0] = up;
+    } else {
+        println!("Already capitalized: {:?}", v);
+    }
+}
+
 fn greet(g1: &String, g2: &String) {
     println!("{} {}", g1, g2);      // These vsariables neither own the passed argument, nor the String
     // Therefor, upon exiting this function, nothing on the heap is deallocated, just the stack frame.
