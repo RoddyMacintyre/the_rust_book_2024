@@ -116,6 +116,15 @@ fn ascii_capitalize(v: &mut Vec<char>) {
     }
 }
 
+// Data must outlive all of its references
+// 2 ways:
+// Reference drops in scopes
+// Flow permissions: expected when an expressions uses either an input reference, or returns an output reference
+// Flow doesn't change throughout the body
+
+// Lifetime parameters; input & output refs are treated differently than references within a func body
+// Rust uses F permissions to check safety of in/out references
+
 fn greet(g1: &String, g2: &String) {
     println!("{} {}", g1, g2);      // These vsariables neither own the passed argument, nor the String
     // Therefor, upon exiting this function, nothing on the heap is deallocated, just the stack frame.
