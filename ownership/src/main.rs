@@ -39,6 +39,16 @@
 // Referencing is a way to handle variables in scopes without moves. They are non-owning pointers
 // Referencing is like borrowing
 
+// ########## AVOIDING SIMUL ALIASING & MUTATION
+// Pointers enable aliasing (accessing same data through different variables)
+// Aliasing combined with mutations is dangerous and tricky
+// Pointer Safety Principle: Data should never be aliased and mutated at the same time
+
+// Data should never be aliased and mutated at the same time! Rust solves this with owner moves.
+// Owned data can only be accessed by the owner.
+
+// Rest is on the borrow checker. This ensures the safety of references (non-owning pointers), made to temporarily create aliases
+
 fn greet(g1: &String, g2: &String) {
     println!("{} {}", g1, g2);      // These vsariables neither own the passed argument, nor the String
     // Therefor, upon exiting this function, nothing on the heap is deallocated, just the stack frame.
