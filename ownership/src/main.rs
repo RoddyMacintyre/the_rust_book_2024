@@ -81,6 +81,19 @@ fn permission_intro() {
 // Creating a reference cause data to be temporarily read-only, until reference is no longer used
 // Vars cannot be mutated when a reference is in use!
 
+// Mutable references provide unique and non-owning access to data
+// Mutable references aka unique references
+// Mutable references can temporarily be downgraded to read-only by doing a &*var expression
+
+// e.g.
+fn mutable_refs(){
+    let mut v: Vec<i32> = vec![1, 2, 3];        // Permissions: v: RWO
+    let num: &mut i32 = &mut v[2];              // Permissions: v: -, num,: RO, *um: RW; v lost all permissions
+    *num += 1;                                  // Permissions:
+    println!("Third element is {}", *num);      // Permissions: v: RWO, num: -, *num: -
+    println!("Vector is now {:?}", v);          // Permissions: v: -
+}
+
 fn greet(g1: &String, g2: &String) {
     println!("{} {}", g1, g2);      // These vsariables neither own the passed argument, nor the String
     // Therefor, upon exiting this function, nothing on the heap is deallocated, just the stack frame.
@@ -160,4 +173,6 @@ fn main() {
     let s_len2 = s.len();           // Implicit reference
     assert_eq!(s_len1, s_len2);
     // Dot syntax is syntactic sugar for the function call syntax
+
+    mutable_refs();
 }
