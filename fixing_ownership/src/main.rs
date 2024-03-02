@@ -79,6 +79,65 @@ Ways to deal with this:
         }
  */
 
+// ========== Aliasing & mutating a Data Structure ==========
+// Unsafe: using a reference to heap data that gets deallocated by another alis
+
+fn add_big_strings(dst: &mut Vec<String>, src: &[String]){
+    let largest: &String = dst.iter()
+        .max_by_key(|s| s.len())
+        .unwrap();
+
+    for s in srd{
+        if s.len() > largest.len(){     // Breaks after the first iteration with true
+            dst.push(s.clone());
+        }
+    }
+}
+
+// let largest removes write permission to dst,
+// but in the same scope the function attempts to push to dst and requires write permission
+// dst.push could deallocate the contents of dst, invalidating the reference to largest
+
+/*
+Ways to deal with this:
+All solutions: Shorten the lifetime of largest to not overlap with dst.push.
+
+    - clone largest (performance hit)
+
+        fn add_big_strings(dst: &mut Vec<String>, src: &[String]) {
+            let largest: String = dst.iter().max_by_key(|s| s.len()).unwrap().clone();
+            for s in src {
+                if s.len() > largest.len() {
+                    dst.push(s.clone());
+                }
+            }
+        }
+
+    - Perform all length comparisons first, then mutate dst (performance hit for allocating to vector to_add)
+
+        fn add_big_strings(dst: &mut Vec<String>, src: &[String]) {
+            let largest: &String = dst.iter().max_by_key(|s| s.len()).unwrap();
+            let to_add: Vec<String> = src.iter()
+                                        .filter(|s| s.len() > largest.len())
+                                        .cloned()
+                                        .collect();
+            dst.extend(to_add);
+        }
+
+    - Copy out length of largest, since we don;t need the actual contents (most idiomatic and performant)
+        LOOK AT WHAT YOU REALLY NEED!
+
+        fn add_big_strings(dst: &mut Vec<String>, src: &[String]) {
+            let largest_len: usize = dst.iter().max_by_key(|s| s.len()).unwrap().len();
+            for s in src {
+                if s.len() > largest_len {
+                    dst.push(s.clone());
+                }
+            }
+        }
+ */
+
+
 fn main() {
     println!("Hello, world!");
 }
