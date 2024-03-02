@@ -46,6 +46,38 @@ fn return_a_string() -> &string{
         }
  */
 
+// ========= Not enough permissions ==========
+// Trying to mutate read-only data, or drop data behind a reference
+
+fn stringify_name_with_title(name: &Vec<String>) -> String{
+    // Name is an immutable reference
+    name.push(String::from("Esq."));
+    let full = name.join(" ");
+    full
+}
+
+/*
+Ways to deal with this:
+    - Change to a mutable type
+        BUT: functions should not mutate their inputs if the caller isn't expecting it
+        (says stringify, but actually modifies the vector!)
+
+    - Take ownership of the name by changing &Vec to Vec
+        BUT: rare to take ownership of heap-owning data. The name variable becomes unusable
+
+        fn stringify_name_with_title(mut name: Vec<String>) -> String {
+            name.push(String::from("Esq."));
+            let full = name.join(" ");
+            full
+        }
+    - Clone the input name, so allowed to mutate a local copy.
+
+        fn stringify_name_with_title(name: &Vec<String>) -> String {
+            let mut full = name.join(" ");  // .join makes a copy of the data into the string full
+            full.push_str(" Esq.");
+            full
+        }
+ */
 
 fn main() {
     println!("Hello, world!");
