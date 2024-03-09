@@ -9,10 +9,10 @@ Rust will always reject unsafe programs, and sometimes might reject a safe one.
 
 // ========== Returning a reference to the stack ==========
 // Data must always outlive its references
-fn return_a_string() -> &string{
-    let s = String::from("Hello world");
-    &s
-}
+// fn return_a_string() -> &string{
+//     let s = String::from("Hello world");
+//     &s
+// }
 
 // The String lives in the scope of the function, and not outside it.
 // So passing a reference to it as a return value, will break.
@@ -87,7 +87,7 @@ fn add_big_strings(dst: &mut Vec<String>, src: &[String]){
         .max_by_key(|s| s.len())
         .unwrap();
 
-    for s in srd{
+    for s in src{
         if s.len() > largest.len(){     // Breaks after the first iteration with true
             dst.push(s.clone());
         }
@@ -177,6 +177,18 @@ Ways to deal with this:
 // ========== Mutating Different Tuple Fields ==========
 // Rust may also reject safe programs, e.g. by conflating 2 different paths as the same path
 
+// ========== Mutating Different Array Elements ==========
+// Similar problem as above arises when we borrow elements from an array
+/*
+Rust borrow checker won't containt different paths for a[0], a[1], etc.
+It uses a single path a[_], representing all indexes of a. This is the case because Rust cannot
+always determine the value of an index
+
+Ways to deal with this:
+
+Rust often provides a func in the STL that can work around the borrow checker, e.g. slice::split_at_mut
+They make use of the concept of unsafe blocks, which allow the use of raw pointers
+ */
 
 fn main() {
     // Safe copying out of a collection
@@ -196,4 +208,23 @@ fn main() {
     // When we refactor the above &name.0 operation to a function, Rust loses track
     // of which paths are borrowed. It determines in the function that both Strings get borrowed
     // (it infers that from the sig). But actually only one String is borrowed in the func body!
+
+    // Mutating different Array Elements
+    let mut a = [0, 1, 2, 3];
+    let x = &mut a[1];  // Remove RW (O was already not present)
+    *x += 1;    // Add RW
+    println!("{a:?}");
+
+    // slice::split_at_mut
+    let mut a = [0, 1, 2, 3];
+    let (a_l, a_r) = a.split_at_mut(2); // Everything up to index 2 is mut
+    let x = &mut a_l[1];
+    let y = &a_r[0];
+    *x += *y;
+
+    // Unsafe blocks
+    let mut a = [0, 1, 2, 3];
+    let x = &mut a[1] as *mut i32;
+    let y = &a[2] as *const i32;
+    unsafe{ *x += *y }  // Be wary of this! Only use when you know you need it
 }

@@ -1,4 +1,2 @@
 Now at:
-https://rust-book.cs.brown.edu/ch04-03-fixing-ownership-errors.html
-
-Section " out of a collectionCopying vs. Moving"
+https://rust-book.cs.brown.edu/ch04-04-slices.html
