@@ -137,7 +137,48 @@ All solutions: Shorten the lifetime of largest to not overlap with dst.push.
         }
  */
 
+// ========== Copying vs. Moving out of a collection ==========
+// Safe see main 1st 3 expressions
+// With strings the necessary permissions are different than for ints
+// Strings don't have the COPY TRAIT
+// This can cause a DOUBLE-FREE, where 2 vars think they own a value, and at the first var drop the string is freed
+// But when the second var drops, the string is attempted to be freed again
+
+/*
+Copying a string copies a pointer to heap data
+Copying an i32 does not do this
+(String does not implement copy trait, i32 does)
+
+TO SUMMARIZE:
+if a value does not own HEAP data, then it can be copied without a move
+- i32 does not own heap data
+- String does own heap data
+- &String does not own heap data
+
+AN EXCEPTION IS MUTABLE REFERENCES, E.G. &mut i32 is not a copyable type
+
+Ways to deal with this:
+
+- AVOID TAKING OWNERSHIP OF THE STRING & JUST USE IMMUTABLE REFERENCE
+    let v: Vec<String> = vec![String::from("Hello world")];
+    let s_ref: &String = &v[0];
+
+- CLONE DATA IF YOU WANT OWNERSHIP OF THE STRING WHILE LEAVING VECTOR ALONE
+    let v: Vec<String> = vec![String::from("Hello world")];
+    let mut s: String = v[0].clone();
+    s.push('!');
+
+- USE A METHOD LIKE Vec::remove TO MOVE THE STRING OUT OF THE VECTOR
+    let mut v: Vec<String> = vec![String::from("Hello world")];
+    let mut s: String = v.remove(0);
+    s.push('!');
+ */
+
+
 
 fn main() {
-    println!("Hello, world!");
+    // Safe copying out of a collection
+    let v: Vec<i32> = vec![0, 1, 2];
+    let n_ref: &i32 = &v[0];    // Read allowed
+    let n: i32 = *n_ref;    // Dereference n_ref
 }
