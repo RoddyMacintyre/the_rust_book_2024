@@ -174,6 +174,8 @@ Ways to deal with this:
     s.push('!');
  */
 
+// ========== Mutating Different Tuple Fields ==========
+// Rust may also reject safe programs, e.g. by conflating 2 different paths as the same path
 
 
 fn main() {
@@ -181,4 +183,17 @@ fn main() {
     let v: Vec<i32> = vec![0, 1, 2];
     let n_ref: &i32 = &v[0];    // Read allowed
     let n: i32 = *n_ref;    // Dereference n_ref
+
+    // Mutating different tuple fields
+    let mut name = (
+        String::from("Ferris"),
+        String::from("Rustacean")
+        );
+
+    let first = &name.0;    // Read permission, borrowed. Removes WO from name
+    name.1.push_str(", Esq.");
+    println!("{first} {}", name.1);
+    // When we refactor the above &name.0 operation to a function, Rust loses track
+    // of which paths are borrowed. It determines in the function that both Strings get borrowed
+    // (it infers that from the sig). But actually only one String is borrowed in the func body!
 }
