@@ -43,6 +43,19 @@ let world: &str = &s[6..11];    // world
 let s2: &String = &s;
  */
 
+// ========== RANGE SYNTAX ==========
+/*
+Can omit the first number in a slice if you start from 0
+[0..2] = [..2]
+The same counts for the end
+[3..len] = [3..]
+Entire string:
+[..]
+
+NOTE: In utf-8 multibyte chars some problems arise with regular slicing.
+Will assume ASCII
+ */
+
 fn main() {
     let mut s = String::from("Roddy Macintyre");    // s on the stack, "Roddy Macintyre" on the heap
     let index_found = first_word(&s);
