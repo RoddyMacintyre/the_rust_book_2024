@@ -56,10 +56,38 @@ NOTE: In utf-8 multibyte chars some problems arise with regular slicing.
 Will assume ASCII
  */
 
+// =========== REWRITING first_word ==========
+/*
+String slices are expressed as &str
+The following func returns a slice of the String passed in, which is a contextual return
+ */
+
+fn _first_word(s: &String) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+
+    &s[..]
+}
+
 fn main() {
     let mut s = String::from("Roddy Macintyre");    // s on the stack, "Roddy Macintyre" on the heap
     let index_found = first_word(&s);
     println!("{index_found}");
     s.clear();
     // From this point, index_found has no meaning
+
+    let mut _s = String::from("Roddy MAcintyre");
+    let slice_found = _first_word(&_s);
+    println!("{slice_found}");
+    _s.clear();
+    // Below now gives error, and describes why the error occurs
+    // If we have an immutable reference to something, we can;t also have a mutable reference to it
+    // The print uses a slice, and the immutable reference needs to be active, but it's cleared!
+    // Compile time dealing with this error!
+    println!("{slice_found}");
 }
