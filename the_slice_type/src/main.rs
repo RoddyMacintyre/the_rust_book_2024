@@ -60,6 +60,7 @@ Will assume ASCII
 /*
 String slices are expressed as &str
 The following func returns a slice of the String passed in, which is a contextual return
+It holds the starting point of the slice and the number of elements
  */
 
 fn _first_word(s: &String) -> &str {
@@ -74,6 +75,13 @@ fn _first_word(s: &String) -> &str {
     &s[..]
 }
 
+// ========== String literals are slices
+/*
+let s = "Hello, world!";
+The type of s is &str; a slice pointing to that specific point in the binary
+Also the reason that they are immutable
+ */
+
 fn main() {
     let mut s = String::from("Roddy Macintyre");    // s on the stack, "Roddy Macintyre" on the heap
     let index_found = first_word(&s);
@@ -81,8 +89,8 @@ fn main() {
     s.clear();
     // From this point, index_found has no meaning
 
-    let mut _s = String::from("Roddy MAcintyre");
-    let slice_found = _first_word(&_s);
+    let mut _s = String::from("Roddy Macintyre");
+    let slice_found = _first_word(&_s);     // Removes write permission from _s
     println!("{slice_found}");
     _s.clear();
     // Below now gives error, and describes why the error occurs
