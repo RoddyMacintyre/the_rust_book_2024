@@ -82,6 +82,28 @@ The type of s is &str; a slice pointing to that specific point in the binary
 Also the reason that they are immutable
  */
 
+// ========== String slices as parameters ==========
+/*
+With the above knowledge, we can improve the signature of the first_word function
+fn _first_word(s: &str) -> &str {
+}
+
+String slices can be passed directly. For String we need to pass a slice or a reference.
+The flexibility of &str takes advantage of deref coercions
+ */
+
+fn __first_word(s: &str) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+
+    &s[..]
+}
+
 fn main() {
     let mut s = String::from("Roddy Macintyre");    // s on the stack, "Roddy Macintyre" on the heap
     let index_found = first_word(&s);
@@ -98,4 +120,19 @@ fn main() {
     // The print uses a slice, and the immutable reference needs to be active, but it's cleared!
     // Compile time dealing with this error!
     println!("{slice_found}");
+
+    // ========== String Slice Params ==========
+    let my_string = String::from("hello world");
+
+    let word = __first_word(&my_string[0..6]);
+    let word = __first_word(&my_string[..]);
+
+    let word = __first_word(&my_string);
+    // ==
+    let my_string_literal = "hello world";
+
+    let word = __first_word(&my_string_literal[0..6]);
+    let word = __first_word(&my_string_literal[..]);
+
+    let word = __first_word(&my_string_literal);
 }
