@@ -104,6 +104,11 @@ fn __first_word(s: &str) -> &str {
     &s[..]
 }
 
+// ========== Other Slices ==========
+/*
+We have general slices besides String slices.
+ */
+
 fn main() {
     let mut s = String::from("Roddy Macintyre");    // s on the stack, "Roddy Macintyre" on the heap
     let index_found = first_word(&s);
@@ -135,4 +140,10 @@ fn main() {
     let word = __first_word(&my_string_literal[..]);
 
     let word = __first_word(&my_string_literal);
+
+    // ========== Other Slices =========
+    let a = [1, 2, 3, 4, 5];
+    let slice = &a[1..3];   // Type = &[i32]
+
+    assert_eq!(slice, &[2, 3]);
 }
