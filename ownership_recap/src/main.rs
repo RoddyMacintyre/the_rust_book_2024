@@ -66,6 +66,15 @@ fn get_words(this: &Document) -> &[String] {
     this.as_slice()
 }
 
+// ========== The concepts of Ownership ==========
+/*
+Ownership at runtime
+- Allocates local variables in stack frames, which are allocated when a function is called and deallocated when the call ends
+- Local vars can hold either data, or pointers
+- Pointers can be created either through boxes (pointers of heap data) or references (non-owning pointers)
+ */
+
+
 
 fn main() {
     // Deep copy a Document
