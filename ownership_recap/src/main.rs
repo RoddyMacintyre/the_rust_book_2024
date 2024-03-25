@@ -124,6 +124,13 @@ Cannot access the mutably borrowed data
 println!("{s}");            // Not OK
  */
 
+// ========== Connecting Ownership between compile-time and runtime
+/*
+Rust's permissions are designed to prevent undefined behavior.
+- use-after-free = when freed memory is read or written => immutable borrows remove the W to prevent them
+- Double-free = memory is freed twice => dereferences of references to non-copyable data don't have the O to avoid these
+ */
+
 
 fn main() {
     // Deep copy a Document
