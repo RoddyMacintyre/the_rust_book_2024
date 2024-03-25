@@ -74,6 +74,55 @@ Ownership at runtime
 - Pointers can be created either through boxes (pointers of heap data) or references (non-owning pointers)
  */
 
+/*
+Ownership at compile-time
+Rust tracks RWO permissions on each variable, and requires appropriate permissions for operations.
+e.g. let mut misses the W permission and cannot be mutated.
+
+Permissions can be changed when a variable is moved or borrowed.
+
+MOVE
+- move with non-copyable type requires RO permissions, and the move eliminates all permissions on the var
+That rule prevents the use of moved variables.
+
+The following demonstrates this:
+fn main() {
+    let s = String::from("Hello world");    // RO
+    consume_a_string(s);                    // No RO
+    println!("{s}");                        // No read after moving s, so cannot print it
+}
+
+BORROW
+Borrowing = creating a reference, temporarily removes some permissions.
+- Immutable borrow creates an immutable reference, and disables borrowed data from mutations and moves
+
+The following demonstrates this:
+
+Can print immutable reference
+let mut s = String::from("Hello");      // RWO
+let s_ref = &s;                         // RO (s becomes R, *s = R)
+println!("{s_ref}");    // Prints
+
+Cannot mutate immutable reference
+let mut s = String::from("Hello");
+let s_ref = &s;
+s_ref.push_str(" world");   // Not OK
+
+Cannot mutate the immutably borrowed data
+s.push_str(" world");       // Not OK
+
+Cannot move data out of the reference
+let s2 = *s_ref;            // Not OK
+
+A mutable borrow creates a mutable reference, which disables the borrowed data from being read, written, or moved.
+This is to prevent the var from changing when borrowed to mutate. The intention of the borrow is clear, so we give owner the right of way.
+
+Can mutate the mutable reference
+s_ref.push_str(" world");
+
+Cannot access the mutably borrowed data
+println!("{s}");            // Not OK
+ */
 
 
 fn main() {
