@@ -3,5 +3,9 @@
 version = 3
 
 [[package]]
+name = "ownership_recap"
+version = "0.1.0"
+
+[[package]]
 name = "the_rust_book_2024"
 version = "0.1.0"
