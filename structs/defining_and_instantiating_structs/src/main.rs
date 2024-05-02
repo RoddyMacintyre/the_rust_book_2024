@@ -69,6 +69,24 @@ If we gave user2/2 new String values for both email and username, then user1 wou
 This is because active and sign_in_count types implement the Copy trait.
  */
 
+// ========== Using Tuple Structs w/o named fields to create different types ==========
+/*
+Rust supports structs that look similar to tuples, called tuple structs.
+They don't have Fieldnames, just Fields.
+
+Handy when you want to define tuple types different from others and when fieldnames are redundant.
+
+To define Tuple Structs: use struct keyword, followed by the types for the fields.
+Each strcut you define is its own type, even though the fields in the structs may have the same types.
+
+e.g. if a function asks a parameter of type Color, it won't accept the Point tuple struct.
+
+Tuple structs can be destructured into individual pieces, and can use dot notation to access individual values/
+ */
+
+// Tuple Structs:
+struct Color(i32, i32, i32);
+struct Point(i32, i32, i32);
 
 fn main() {
     // Instance of the struct example
@@ -97,4 +115,9 @@ fn main() {
         email: String::from("another@example.com"),
         ..user1
     };
+
+    // Tuple Structs
+    // black and origin are instances of different tuple struct types.
+    let black = Color(0, 0, 0);
+    let origin = Point(0, 0, 0);
 }
