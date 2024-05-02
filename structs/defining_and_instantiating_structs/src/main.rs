@@ -43,6 +43,19 @@ fn build_user(email: String, username: String) {
 // To get a specific value, use dot notation. If the instance is mutable, also use dot notation for mutations
 // To mutate values, the entire instance must be mutable, certain mutable fields are not supported by Rust
 
+// ========== Using the Field init shorthand ==========
+/*
+Can abbreviate initialization by leaving out the member names at initialization that are given as parameters in the factory
+ */
+
+fn build_user_abbreviated(email: String, username: String){
+    User {
+        active: true,
+        username,
+        email,
+        sign_in_count: 1,
+    }
+}
 
 
 fn main() {
