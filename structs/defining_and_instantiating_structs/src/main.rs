@@ -57,6 +57,18 @@ fn build_user_abbreviated(email: String, username: String){
     }
 }
 
+// ========== Creating Instances from other Instances with Struct Update syntax ==========
+/*
+Sometimes you want to create new struct instances that differ only by a few Fields, and have the rest in common.
+This can be achieved by the Update syntax.
+
+..<struct> is the syntax, and comes after all other field assignments.
+= is used as an assigment, because it moves the data.
+CAN NO LONGER USE user1! The String in in the username field of user1 was moved to user2.
+If we gave user2/2 new String values for both email and username, then user1 would still be valid, because nothing was moved
+This is because active and sign_in_count types implement the Copy trait.
+ */
+
 
 fn main() {
     // Instance of the struct example
@@ -69,4 +81,20 @@ fn main() {
 
     // Set a field by dot notation
     user1.email = String::from("anotheremail@example.com");     // On heap
+
+    // Regular way of creating a new struct instance based on another one
+    // The references are stored on the heap
+    let user2 = User {
+        active: user1.active,
+        username: user1.username,
+        email: String::from("another@example.com"),
+        sign_in_count: user1.sign_in_count,
+    };
+
+    // With Update syntax
+    // ..user1 says that the rest of the fields are set the same as user1
+    let user3 = User {
+        email: String::from("another@example.com"),
+        ..user1
+    };
 }
