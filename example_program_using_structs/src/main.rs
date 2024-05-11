@@ -19,6 +19,14 @@ Let's refactor to a tuple.
  */
 
 // ========== Refactoring with Tuples ==========
+/*
+In one way the program is better by adding a bit of structure and passing one argument instead of 2.
+It can however also be less clear because tuples don't have named elements, having us rely on indices.
+
+Mixing height and width for calculating the area is no problem, but suppose you want to draw
+the rectangle on screen. You would have to memorize which index represents which dimension.
+We haven't conveyed the meaning of our data in our code, so it's easy to introduce subtle bugs and errors.
+ */
 
 fn area_of_tuple(dimensions: (u32, u32)) -> u32 {
     dimensions.0 * dimensions.1
@@ -35,4 +43,10 @@ fn main() {
     );
 
     // Tuple version:
+    let rect1 = (30, 50);
+
+    println!(
+        "The area of the rectangle is {} square pixels.",
+        area_of_tuple(rect1)
+    );
 }
