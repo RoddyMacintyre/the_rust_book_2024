@@ -107,6 +107,38 @@ Imagine later on AlwaysEqual is always equal to any instance of any other type, 
 Now we don't need any data to implement that behavior.
  */
 
+// ========== Ownership of Struct Data ==========
+/*
+In the user struct we used the owned String type rather than the &str string slice type.
+This was done deliberately to have the struct instances each to own all of its data,
+and for it to be valid for the lifetime of the instance.
+
+It's possible for structs to store references to data owned by something else, but this requires lifetimes.
+Lifetimes are discussed in chapter 10. They ensure the data referenced is valid for the lifetime of the struct.
+
+Below an example of trying to store a reference in a struct without specifying the lifetime:
+struct User {
+    username: &str,
+    email: &str,
+    sign_in_count: u64,
+    active: bool,
+}
+
+fn main() {
+    let user1 = User {
+        active: true,
+        username: "someusername123",
+        email: "someone@example.com",
+        sign_in_cout: 1,
+    };
+}
+
+The compiler will complain about a lifetime specifier. It will suggest something along the lines of
+struct User<'a> {
+    username: &'a str,
+    ...
+ */
+
 fn main() {
     // Instance of the struct example
     let mut user1 = User {
