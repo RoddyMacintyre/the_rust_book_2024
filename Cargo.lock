@@ -3,6 +3,10 @@
 version = 3
 
 [[package]]
+name = "example_program_using_structs"
+version = "0.1.0"
+
+[[package]]
 name = "ownership_recap"
 version = "0.1.0"
 

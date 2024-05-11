@@ -1,6 +1,5 @@
-workspace = { members = ["ownership_recap", "example_program_using_structs"] }
 [package]
-name = "the_rust_book_2024"
+name = "example_program_using_structs"
 version = "0.1.0"
 edition = "2021"
 
