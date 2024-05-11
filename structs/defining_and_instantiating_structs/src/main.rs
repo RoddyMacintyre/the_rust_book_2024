@@ -88,6 +88,25 @@ Tuple structs can be destructured into individual pieces, and can use dot notati
 struct Color(i32, i32, i32);
 struct Point(i32, i32, i32);
 
+// ========== Unit-Like Structs Without Any Fields ==========
+/*
+Can define structs without fields, called unit-like structs. Called so because they behave like (),
+the unit type mentioned in The Tuple Type section.
+
+Useful when you need to implement a trait on some type, but don't have any data to store in the type itself.
+Traits are discussed in chapter 10.
+
+Below an example of declaring & instantiating a unit struct named AlwaysEqual
+ */
+struct AlwaysEqual;
+
+/*
+To define AlwaysEqual, we use the struct keyword, the name we want, and then a semicolon. From there
+we can get an instance  of AlwaysEqual in the subject variable.
+Imagine later on AlwaysEqual is always equal to any instance of any other type, for testing purposes.
+Now we don't need any data to implement that behavior.
+ */
+
 fn main() {
     // Instance of the struct example
     let mut user1 = User {
@@ -120,4 +139,7 @@ fn main() {
     // black and origin are instances of different tuple struct types.
     let black = Color(0, 0, 0);
     let origin = Point(0, 0, 0);
+
+    // Unit-Like Structs Without Any Fields
+    let subject = AlwaysEqual;
 }
