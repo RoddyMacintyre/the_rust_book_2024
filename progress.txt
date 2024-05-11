@@ -1,3 +1,2 @@
 Now at:
-https://rust-book.cs.brown.edu/ch04-05-ownership-recap.html
-On "Ownership at Compile-time"
+https://rust-book.cs.brown.edu/ch05-02-example-structs.html
