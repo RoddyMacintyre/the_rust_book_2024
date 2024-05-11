@@ -139,6 +139,17 @@ struct User<'a> {
     ...
  */
 
+// ========== Borrowing Fields of a Struct ==========
+/*
+Similar to different tuple fields, Rust's borrow checker will track ownership permissions at both
+the Struct level and field level. E.g. if we borrow a field x of a Point struct,
+then both p and p.x temporarily lose their permissions (but not p.y).
+
+So, be mindful which fields of a Struct are supposed to be borrowed with which permissions.
+At the same time be aware of the borrow checker's limitations, since Rust assumes more borrowing
+than is actually occurring.
+ */
+
 fn main() {
     // Instance of the struct example
     let mut user1 = User {
@@ -174,4 +185,16 @@ fn main() {
 
     // Unit-Like Structs Without Any Fields
     let subject = AlwaysEqual;
+
+    // Borrowing Fields of a Struct
+    struct Point {x: i32, y: i32}
+
+    let mut p = Point {x: 0, y: 0};    // All permissions
+
+    let x = &mut p.x;   // p & p.x lose their permissions, but p.y retains them
+    *x += 1;    // Has RWO permissions on p & p.x
+
+    // If we now try to use p while p.x is mutably borrowed, the compiler will reject the program.
+    // The compiler will say something along the lines of:
+    // error[E0502]: cannot borrow `p` as immutable because it is also borrowed as mutable
 }
