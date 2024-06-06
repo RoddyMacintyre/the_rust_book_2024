@@ -32,6 +32,34 @@ fn area_of_tuple(dimensions: (u32, u32)) -> u32 {
     dimensions.0 * dimensions.1
 }
 
+// ========== Refactoring with Structs ==========
+/*
+Structs add meaning to data by means of labels. We can transform the Tuple we're using into a
+Struct with a name for the whole, as well as names for the parts.
+ */
+
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+fn area_of_struct(rectangle: &Rectangle) -> u32 {
+    rectangle.width * rectangle.height
+}
+
+/*
+We have a Struct named Rectangle. Inside it, we define the fields as width and height (type u32).
+In main, we created an instance of Rectangle with a width of 30 and height of 50.
+
+the area func is now defined with one parameter, named rectangle and typed as an immutable borrowed struct of Rectangle.
+We want to borrow rather than take ownership, so main can retain it and can continue using it (hence passing the reference &)
+
+The area func accesses the width and height fields of the Rectangle instance (accessing fields in borrows does not move the field values).
+The func sig now says exactly what we mean; calculate the area of a Rectangle, using width and height.
+This conveys that width and height are related to each other, and gives descriptive power relative to the tuple.
+ */
+
+
 fn main() {
     // Single variables
     let width1 = 30;
@@ -49,4 +77,15 @@ fn main() {
         "The area of the rectangle is {} square pixels.",
         area_of_tuple(rect1)
     );
+
+    // Refactoring with Struct
+    let rect2 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+
+    println!(
+        "The area of the rectangle is {} square pixels.",
+        area_of_struct(&rect2)
+    )
 }
